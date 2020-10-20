@@ -1,0 +1,1 @@
+# super-wp-aws-auto
