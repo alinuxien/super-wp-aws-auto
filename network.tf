@@ -5,41 +5,40 @@ resource "aws_vpc" "main" {
   }
 }
 
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public-a" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.100.0/24"
   tags = {
-    Name = "subnet-public"
+    Name = "subnet-public-a"
   }
 }
 
-resource "aws_subnet" "private-0" {
+resource "aws_subnet" "public-b" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.101.0/24"
+  tags = {
+    Name = "subnet-public-b"
+  }
+}
+
+resource "aws_subnet" "private-a" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.0.0/24"
   tags = {
-    Name = "subnet-private-0"
+    Name = "subnet-private-a"
   }
 }
 
-resource "aws_subnet" "private-1" {
+resource "aws_subnet" "private-b" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.1.0/24"
   tags = {
-    Name = "subnet-private-1"
-  }
-}
-
-resource "aws_subnet" "private-2" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.2.0/24"
-  tags = {
-    Name = "subnet-private-2"
+    Name = "subnet-private-b"
   }
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
-
 }
 
 resource "aws_eip" "ip-ngw" {
@@ -48,71 +47,70 @@ resource "aws_eip" "ip-ngw" {
 
 resource "aws_nat_gateway" "ngw" {
   allocation_id = aws_eip.ip-ngw.id
-  subnet_id     = aws_subnet.private-1.id
-  depends_on    = [aws_eip.ip-ngw]
+  subnet_id     = aws_subnet.public-a.id
 }
 
-resource "aws_route_table" "public" {
+resource "aws_route_table" "public-a" {
   vpc_id = aws_vpc.main.id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = "public-rt"
+    Name = "public-rt-a"
   }
 }
 
-resource "aws_route_table" "private-0" {
+resource "aws_route_table" "public-b" {
+  vpc_id = aws_vpc.main.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+  tags = {
+    Name = "public-rt-b"
+  }
+}
+
+resource "aws_route_table" "private-a" {
   vpc_id = aws_vpc.main.id
   route {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.ngw.id
   }
   tags = {
-    Name = "private-rt-0"
+    Name = "private-rt-a"
   }
 }
 
-resource "aws_route_table" "private-1" {
+resource "aws_route_table" "private-b" {
   vpc_id = aws_vpc.main.id
   route {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.ngw.id
   }
   tags = {
-    Name = "private-rt-1"
+    Name = "private-rt-b"
   }
 }
 
-resource "aws_route_table" "private-2" {
-  vpc_id = aws_vpc.main.id
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.ngw.id
-  }
-  tags = {
-    Name = "private-rt-2"
-  }
+resource "aws_route_table_association" "public-a" {
+  subnet_id      = aws_subnet.public-a.id
+  route_table_id = aws_route_table.public-a.id
 }
 
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
-  route_table_id = aws_route_table.public.id
+resource "aws_route_table_association" "public-b" {
+  subnet_id      = aws_subnet.public-b.id
+  route_table_id = aws_route_table.public-b.id
 }
 
-resource "aws_route_table_association" "private-0" {
-  subnet_id      = aws_subnet.private-0.id
-  route_table_id = aws_route_table.private-0.id
+resource "aws_route_table_association" "private-a" {
+  subnet_id      = aws_subnet.private-a.id
+  route_table_id = aws_route_table.private-a.id
 }
 
-resource "aws_route_table_association" "private-1" {
-  subnet_id      = aws_subnet.private-1.id
-  route_table_id = aws_route_table.private-1.id
-}
-
-resource "aws_route_table_association" "private-2" {
-  subnet_id      = aws_subnet.private-2.id
-  route_table_id = aws_route_table.private-2.id
+resource "aws_route_table_association" "private-b" {
+  subnet_id      = aws_subnet.private-b.id
+  route_table_id = aws_route_table.private-b.id
 }
 
