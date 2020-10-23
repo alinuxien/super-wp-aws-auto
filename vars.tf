@@ -10,3 +10,15 @@ variable "instance-type-webserver" {
   default     = "t2.micro"
 }
 
+variable "ami-bastion" {
+  type        = string
+  description = "Image Amazon à utiliser pour le Bastion SSH"
+  default     = "ami-0de12f76efe134f2f"
+}
+
+variable "instance-type-bastion" {
+  type        = string
+  description = "Type d'Instance à utiliser pour le Bastion SSH"
+  default     = "t2.micro"
+}
+
