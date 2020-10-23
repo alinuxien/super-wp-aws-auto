@@ -22,3 +22,7 @@ variable "instance-type-bastion" {
   default     = "t2.micro"
 }
 
+variable "aws-bastion-local-pub-key" {
+  type        = string
+  description = "Clé publique locale pour créer une AWS Key Pair pour Bastion"
+}
