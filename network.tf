@@ -21,13 +21,24 @@ resource "aws_subnet" "public-b" {
   }
 }
 
-resource "aws_subnet" "private-a" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.0.0/24"
+resource "aws_subnet" "private-a1" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.0.0/24"
+  availability_zone = data.aws_availability_zones.available.names[0]
   tags = {
-    Name = "subnet-private-a"
+    Name = "subnet-private-a1"
   }
 }
+
+resource "aws_subnet" "private-a2" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = data.aws_availability_zones.available.names[1]
+  tags = {
+    Name = "subnet-private-a2"
+  }
+}
+
 
 resource "aws_subnet" "private-b" {
   vpc_id     = aws_vpc.main.id
@@ -72,16 +83,28 @@ resource "aws_route_table" "public-b" {
   }
 }
 
-resource "aws_route_table" "private-a" {
+resource "aws_route_table" "private-a1" {
   vpc_id = aws_vpc.main.id
   route {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.ngw.id
   }
   tags = {
-    Name = "private-rt-a"
+    Name = "private-rt-a1"
   }
 }
+
+resource "aws_route_table" "private-a2" {
+  vpc_id = aws_vpc.main.id
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.ngw.id
+  }
+  tags = {
+    Name = "private-rt-a2"
+  }
+}
+
 
 resource "aws_route_table" "private-b" {
   vpc_id = aws_vpc.main.id
@@ -104,10 +127,16 @@ resource "aws_route_table_association" "public-b" {
   route_table_id = aws_route_table.public-b.id
 }
 
-resource "aws_route_table_association" "private-a" {
-  subnet_id      = aws_subnet.private-a.id
-  route_table_id = aws_route_table.private-a.id
+resource "aws_route_table_association" "private-a1" {
+  subnet_id      = aws_subnet.private-a1.id
+  route_table_id = aws_route_table.private-a1.id
 }
+
+resource "aws_route_table_association" "private-a2" {
+  subnet_id      = aws_subnet.private-a2.id
+  route_table_id = aws_route_table.private-a2.id
+}
+
 
 resource "aws_route_table_association" "private-b" {
   subnet_id      = aws_subnet.private-b.id
