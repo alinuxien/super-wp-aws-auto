@@ -1,5 +1,5 @@
-resource "aws_security_group" "allow_ssh" {
-  name        = "allow_ssh"
+resource "aws_security_group" "allow-ssh" {
+  name        = "allow-ssh"
   description = "Autoriser le traffic SSH entrant et sortant"
   vpc_id      = aws_vpc.main.id
 
@@ -20,13 +20,13 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   tags = {
-    Name = "allow_ssh"
+    Name = "allow-ssh"
   }
 }
 
 resource "aws_key_pair" "bastion" {
   key_name   = "bastion-key"
-  public_key = var.aws-bastion-local-pub-key
+  public_key = var.aws-local-pub-key
 }
 
 resource "aws_instance" "bastion" {
@@ -34,7 +34,7 @@ resource "aws_instance" "bastion" {
   instance_type               = var.instance-type-bastion
   subnet_id                   = aws_subnet.public-b.id
   associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.allow_ssh.id]
+  vpc_security_group_ids      = [aws_security_group.allow-ssh.id]
   key_name                    = aws_key_pair.bastion.id
   tags = {
     Name = "bastion"
