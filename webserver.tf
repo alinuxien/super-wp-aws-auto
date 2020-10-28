@@ -26,7 +26,7 @@ resource "aws_security_group_rule" "in-http" {
   security_group_id = aws_security_group.webserver.id
 }
 
-resource "aws_security_group_rule" "out-null" {
+resource "aws_security_group_rule" "out-all" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
@@ -35,23 +35,13 @@ resource "aws_security_group_rule" "out-null" {
   security_group_id = aws_security_group.webserver.id
 }
 
-resource "tls_private_key" "webserver" {
-  algorithm = "RSA"
-  rsa_bits  = 2048
-}
-
-resource "aws_key_pair" "generated_key" {
-  key_name   = "webserver_key_name"
-  public_key = tls_private_key.webserver.public_key_openssh
-}
-
 resource "aws_instance" "webserver1" {
   ami                    = var.ami-webserver
   instance_type          = var.instance-type-webserver
   subnet_id              = aws_subnet.private-a1.id
   vpc_security_group_ids = [aws_security_group.webserver.id]
   availability_zone      = data.aws_availability_zones.available.names[0]
-  key_name               = aws_key_pair.generated_key.key_name
+  key_name               = aws_key_pair.keypair.id
   tags = {
     Name = "webserver1"
   }
@@ -63,7 +53,7 @@ resource "aws_instance" "webserver2" {
   subnet_id              = aws_subnet.private-a2.id
   vpc_security_group_ids = [aws_security_group.webserver.id]
   availability_zone      = data.aws_availability_zones.available.names[1]
-  key_name               = aws_key_pair.generated_key.key_name
+  key_name               = aws_key_pair.keypair.id
   tags = {
     Name = "webserver2"
   }
@@ -77,10 +67,3 @@ output webserver2_ip {
   value = aws_instance.webserver2.private_ip
 }
 
-output webservers_private_key {
-  value = tls_private_key.webserver.private_key_pem
-}
-
-output webservers_public_key {
-  value = tls_private_key.webserver.public_key_openssh
-}
