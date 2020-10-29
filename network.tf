@@ -53,6 +53,9 @@ resource "aws_subnet" "private-c" {
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
+  tags = {
+    Name = "Mlle C Internet Gateway"
+  }
 }
 
 resource "aws_eip" "ip-ngw" {
