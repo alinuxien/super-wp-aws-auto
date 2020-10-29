@@ -57,11 +57,3 @@ resource "aws_instance" "webserver2" {
   }
 }
 
-output webserver1_ip {
-  value = aws_instance.webserver1.private_ip
-}
-
-output webserver2_ip {
-  value = aws_instance.webserver2.private_ip
-}
-
