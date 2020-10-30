@@ -18,3 +18,10 @@ output rds_address {
   value = aws_db_instance.database.address
 }
 
+output memcached_address {
+  value = aws_elasticache_cluster.mllec.cluster_address
+}
+
+output memcached_configuration_endpoint {
+  value = aws_elasticache_cluster.mllec.configuration_endpoint
+}
