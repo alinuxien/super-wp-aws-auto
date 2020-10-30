@@ -26,3 +26,21 @@ variable "aws-local-pub-key" {
   type        = string
   description = "Clé publique locale pour créer une AWS Key Pair"
 }
+
+variable "database-name" {
+  type        = string
+  description = "Nom de la base de données à créer"
+  default     = "terraform"
+}
+
+variable "database-username" {
+  type        = string
+  description = "Nom utilisateur pour connexion à la BD"
+  default     = "terraform"
+}
+
+variable "database-password" {
+  type        = string
+  description = "Password utlisateur pour connexion à la BD"
+  default     = "alinuxien"
+}

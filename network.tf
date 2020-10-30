@@ -42,12 +42,21 @@ resource "aws_subnet" "private-b" {
 }
 
 
-resource "aws_subnet" "private-c" {
+resource "aws_subnet" "private-a2" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.2.0/24"
   availability_zone = data.aws_availability_zones.available.names[0]
   tags = {
-    Name = "subnet-private-c"
+    Name = "subnet-private-a2"
+  }
+}
+
+resource "aws_subnet" "private-b2" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.3.0/24"
+  availability_zone = data.aws_availability_zones.available.names[1]
+  tags = {
+    Name = "subnet-private-b2"
   }
 }
 
@@ -112,16 +121,28 @@ resource "aws_route_table" "private-b" {
 }
 
 
-resource "aws_route_table" "private-c" {
+resource "aws_route_table" "private-a2" {
   vpc_id = aws_vpc.main.id
   route {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.ngw.id
   }
   tags = {
-    Name = "private-rt-c"
+    Name = "private-rt-a2"
   }
 }
+
+resource "aws_route_table" "private-b2" {
+  vpc_id = aws_vpc.main.id
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.ngw.id
+  }
+  tags = {
+    Name = "private-rt-b2"
+  }
+}
+
 
 resource "aws_route_table_association" "public-a" {
   subnet_id      = aws_subnet.public-a.id
@@ -143,9 +164,13 @@ resource "aws_route_table_association" "private-b" {
   route_table_id = aws_route_table.private-b.id
 }
 
+resource "aws_route_table_association" "private-a2" {
+  subnet_id      = aws_subnet.private-a2.id
+  route_table_id = aws_route_table.private-a2.id
+}
 
-resource "aws_route_table_association" "private-c" {
-  subnet_id      = aws_subnet.private-c.id
-  route_table_id = aws_route_table.private-c.id
+resource "aws_route_table_association" "private-b2" {
+  subnet_id      = aws_subnet.private-b2.id
+  route_table_id = aws_route_table.private-b2.id
 }
 
