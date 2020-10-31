@@ -4,6 +4,12 @@ variable "ami-webserver" {
   default     = "ami-0de12f76efe134f2f"
 }
 
+variable "webservers-user" {
+  type        = string
+  description = "Nom utilisateur SSH pour les serveurs web"
+  default     = "ec2-user"
+}
+
 variable "instance-type-webserver" {
   type        = string
   description = "Type d'Instance à utiliser pour le serveur Web"
@@ -16,6 +22,12 @@ variable "ami-bastion" {
   default     = "ami-0de12f76efe134f2f"
 }
 
+variable "bastion-user" {
+  type        = string
+  description = "Nom utilisateur SSH pour le bastion"
+  default     = "ec2-user"
+}
+
 variable "instance-type-bastion" {
   type        = string
   description = "Type d'Instance à utiliser pour le Bastion SSH"
@@ -25,6 +37,11 @@ variable "instance-type-bastion" {
 variable "aws-local-pub-key" {
   type        = string
   description = "Clé publique locale pour créer une AWS Key Pair"
+}
+
+variable "private_key_file" {
+  type = string
+  description = "Chemin complet du fichier contenant la cle privee"
 }
 
 variable "database-name" {

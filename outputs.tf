@@ -25,3 +25,22 @@ output memcached_address {
 output memcached_configuration_endpoint {
   value = aws_elasticache_cluster.mllec.configuration_endpoint
 }
+
+resource "local_file" "AnsibleInventory" {
+  content = templatefile("inventory.tmpl", {
+    bastion-dns     = aws_instance.bastion.private_dns,
+    bastion-ip      = aws_instance.bastion.public_ip,
+    bastion-id      = aws_instance.bastion.id,
+    bastion-user    = var.bastion-user,
+    webserver1-dns  = aws_instance.webserver1.private_dns,
+    webserver1-ip   = aws_instance.webserver1.private_ip,
+    webserver1-id   = aws_instance.webserver1.id
+    webserver2-dns  = aws_instance.webserver2.private_dns,
+    webserver2-ip   = aws_instance.webserver2.private_ip,
+    webserver2-id   = aws_instance.webserver2.id,
+    webservers-user = var.webservers-user,
+    private_key_file = var.private_key_file
+  })
+  filename = "inventory"
+}
+
