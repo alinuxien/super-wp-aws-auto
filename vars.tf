@@ -34,14 +34,14 @@ variable "instance-type-bastion" {
   default     = "t2.micro"
 }
 
-variable "aws-local-pub-key" {
-  type        = string
-  description = "Clé publique locale pour créer une AWS Key Pair"
-}
-
 variable "private_key_file" {
   type        = string
   description = "Chemin complet du fichier contenant la cle privee"
+}
+
+variable "public_key_file" {
+  type        = string
+  description = "Chemin complet du fichier contenant la cle publique"
 }
 
 variable "database-name" {
