@@ -40,7 +40,7 @@ variable "aws-local-pub-key" {
 }
 
 variable "private_key_file" {
-  type = string
+  type        = string
   description = "Chemin complet du fichier contenant la cle privee"
 }
 
