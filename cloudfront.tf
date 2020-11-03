@@ -19,6 +19,8 @@ resource "aws_cloudfront_distribution" "cloudfront" {
 
   price_class = "PriceClass_100"
 
+  aliases = ["mllec.akrour.fr"]
+
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
@@ -27,7 +29,8 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = data.aws_acm_certificate.mllec.arn
+    ssl_support_method  = "sni-only"
   }
 
   default_cache_behavior {
