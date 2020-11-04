@@ -26,6 +26,15 @@ resource "aws_security_group_rule" "in-http" {
   security_group_id = aws_security_group.webserver.id
 }
 
+resource "aws_security_group_rule" "in-https" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = [aws_vpc.main.cidr_block]
+  security_group_id = aws_security_group.webserver.id
+}
+
 resource "aws_security_group_rule" "out-all" {
   type              = "egress"
   from_port         = 0

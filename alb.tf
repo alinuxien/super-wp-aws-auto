@@ -1,27 +1,47 @@
 resource "aws_security_group" "alb" {
   name        = "alb"
-  description = "Autoriser le traffic HTTP entrant"
+  description = "Autoriser le traffic HTTP et HTTPS entrant"
   vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description = "HTTP depuis partout"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    description = "HTTP vers partout"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
   tags = {
     Name = "alb"
   }
+}
+
+resource "aws_security_group_rule" "in_http" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.alb.id
+}
+
+resource "aws_security_group_rule" "in_https" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.alb.id
+}
+
+resource "aws_security_group_rule" "out_http" {
+  type              = "egress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.alb.id
+}
+
+resource "aws_security_group_rule" "out_https" {
+  type              = "egress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.alb.id
 }
 
 resource "aws_lb" "alb" {
@@ -63,6 +83,38 @@ resource "aws_lb_listener" "alb-listener" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.target-group.arn
+  }
+}
+
+resource "aws_lb_target_group" "target-group-secure" {
+  name     = "webserver-tg-secure"
+  port     = 443
+  protocol = "HTTPS"
+  vpc_id   = aws_vpc.main.id
+}
+
+resource "aws_lb_target_group_attachment" "tg-secure-webserver1" {
+  target_group_arn = aws_lb_target_group.target-group-secure.arn
+  target_id        = aws_instance.webserver1.id
+  port             = 443
+}
+
+resource "aws_lb_target_group_attachment" "tg-secure-webserver2" {
+  target_group_arn = aws_lb_target_group.target-group-secure.arn
+  target_id        = aws_instance.webserver2.id
+  port             = 443
+}
+
+resource "aws_lb_listener" "alb-listener-secure" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = data.aws_acm_certificate.mllec.arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.target-group-secure.arn
   }
 }
 

@@ -9,7 +9,7 @@ ${webserver2-dns} ansible_host=${webserver2-ip}  ansible_ssh_private_key_file=${
 ansible_ssh_common_args= '-o StrictHostkeyChecking=no'
 
 [webservers:vars]
-ansible_ssh_common_args= '-o ProxyCommand="ssh -i ${private_key_file} -W %h:%p ${bastion-user}@${bastion-ip}" -o StrictHostKeyChecking=no'
+ansible_ssh_common_args= '-o ProxyCommand="ssh -i ${private_key_file} -W %h:%p ${bastion-user}@${bastion-ip} -o StrictHostKeyChecking=no" -o StrictHostKeyChecking=no'
 
 
 
