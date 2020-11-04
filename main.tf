@@ -14,8 +14,12 @@ data "local_file" "local-pub-key" {
   filename = var.public_key_file
 }
 
-data "aws_acm_certificate" "mllec" {
+data "aws_acm_certificate" "mllec_cloudfront" {
   provider = aws.use1
+  domain   = "mllec.akrour.fr"
+}
+
+data "aws_acm_certificate" "mllec" {
   domain   = "mllec.akrour.fr"
 }
 

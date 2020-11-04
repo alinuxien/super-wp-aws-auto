@@ -29,7 +29,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = data.aws_acm_certificate.mllec.arn
+    acm_certificate_arn = data.aws_acm_certificate.mllec_cloudfront.arn
     ssl_support_method  = "sni-only"
   }
 
