@@ -1,0 +1,9 @@
+/* clés privée et publique générées avec ssh-keygen au préalable */
+public_key_file   = "/home/alinuxien/.ssh/id_rsa_aws.pub"
+private_key_file  = "/home/alinuxien/.ssh/id_rsa_aws"
+ami-webserver     = "ami-00b825a92ccbbe0f7" /* Bitnami Wordpress */
+database-name     = "alinuxien"
+database-username = "alinuxien"
+database-password = "alinuxien"
+webservers-user   = "bitnami" /* depend de l'AMI choisie pour webserver */
+
