@@ -20,7 +20,7 @@ data "aws_acm_certificate" "mllec_cloudfront" {
 }
 
 data "aws_acm_certificate" "mllec" {
-  domain   = "mllec.akrour.fr"
+  domain = "mllec.akrour.fr"
 }
 
 data "aws_route53_zone" "primary" {
