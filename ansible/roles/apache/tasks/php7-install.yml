@@ -1,0 +1,8 @@
+---
+- name: "Installation de PHP 7.0"
+  yum:
+          name: "php, php-mysql, php-dom, php-mbstring, php-gd, ImageMagick"
+          state: latest
+  changed_when: yes
+  notify: [ "httpd restart" ]
+

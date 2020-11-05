@@ -1,0 +1,17 @@
+---
+- name: "Installation du serveur apache httpd"
+  yum:
+          name: httpd
+          state: present
+          update_cache: yes
+
+- name: "Activation du service apache"
+  service:
+          name: httpd
+          state: started
+          enabled: yes
+
+- name: "Installation des paquets PHP"
+  include: "php7-install.yml"
+  when: php_install|default(False)|bool
+

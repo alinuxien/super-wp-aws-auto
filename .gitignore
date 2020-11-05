@@ -4,5 +4,3 @@ terraform.tfvars
 *.backup
 ssh
 inventory
-wordpress-playbooks
-dns.tf.temp

@@ -45,6 +45,6 @@ resource "local_file" "AnsibleInventory" {
     webservers-user  = var.webservers-user,
     private_key_file = var.private_key_file
   })
-  filename = "inventory"
+  filename = "../ansible/inventory"
 }
 

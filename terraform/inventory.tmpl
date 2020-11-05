@@ -10,6 +10,6 @@ ansible_ssh_common_args= '-o StrictHostkeyChecking=no'
 
 [webservers:vars]
 ansible_ssh_common_args= '-o ProxyCommand="ssh -i ${private_key_file} -W %h:%p ${bastion-user}@${bastion-ip} -o StrictHostKeyChecking=no" -o StrictHostKeyChecking=no'
-
-
+ansible_user= ${webservers-user}
+ansible_become= yes 
 
