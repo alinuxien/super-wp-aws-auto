@@ -1,0 +1,7 @@
+- name: "Installation de PHP 7.4 et des extentions"
+  yum:
+          name: "epel-release, php-common, php-fpm, php-gd, php-intl, php-json, php-mbstring, php-mysqlnd, php-xml, ImageMagick"
+          state: present
+  changed_when: yes
+  notify: [ "httpd restart" ]
+
