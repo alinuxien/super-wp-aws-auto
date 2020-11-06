@@ -1,0 +1,6 @@
+---
+- name: "Installation Wordpress CLI"
+  hosts: webservers
+  roles:
+          - role: "wordpress-cli"
+

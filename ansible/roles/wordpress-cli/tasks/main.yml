@@ -1,0 +1,7 @@
+---
+- name: Installation de wp-cli
+  yum:
+      name: "php-cli, wp-cli"
+      state: present
+      update_cache: yes
+
