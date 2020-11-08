@@ -1,7 +1,9 @@
 ---
-- name: Installation de wp-cli
+- name: Installation
   yum:
       name: "php-cli, wp-cli"
       state: present
       update_cache: yes
+
+- include_tasks: config.yml
 

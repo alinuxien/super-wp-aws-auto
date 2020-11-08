@@ -1,0 +1,10 @@
+---
+- name: Téléchargement de Wordpress
+  shell: "/usr/bin/find ${webserver_path}/wp-config.php -type f || wp core download --path=${webserver_path}"
+
+- name: Configuration de base de Wordress
+  shell: "/usr/bin/find ${webserver_path}/wp-config.php -type f || wp config create --locale=fr_FR --dbhost=${db_server} --dbname=${db_name} --dbuser=${db_user} --dbpass=${db_pass} --path=${webserver_path}"
+
+- name: Préparation de la Base de Données de Wordpress
+  shell: "wp core install --url=mllec.akrour.fr --title=\"MlleC\" --admin_user=mllec --admin_password=mllec --admin_email=ali@akrour.fr --path=${webserver_path}"
+

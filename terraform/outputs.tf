@@ -48,3 +48,15 @@ resource "local_file" "AnsibleInventory" {
   filename = "../ansible/inventory"
 }
 
+resource "local_file" "AnsibleWPCLIConfig" {
+  content = templatefile("config.yml.tmpl", {
+    db_server         = aws_db_instance.database.address,
+    db_name           = var.database-name,
+    db_user           = var.database-username,
+    db_pass           = var.database-password,
+    webserver_path    = var.webserver-homepage-path,
+    memchached_server = aws_elasticache_cluster.mllec.configuration_endpoint
+  })
+  filename = "../ansible/roles/wordpress-cli/tasks/config.yml"
+}
+

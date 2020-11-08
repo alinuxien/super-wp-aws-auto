@@ -16,6 +16,12 @@ variable "instance-type-webserver" {
   default     = "t2.micro"
 }
 
+variable "webserver-homepage-path" {
+  type        = string
+  description = "Chemin complet et absolu des pages Web sur le serveur Web"
+  default     = "/srv/www/htdocs"
+}
+
 variable "ami-bastion" {
   type        = string
   description = "Image Amazon à utiliser pour le Bastion SSH"
