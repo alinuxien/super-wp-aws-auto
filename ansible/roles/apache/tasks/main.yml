@@ -1,7 +1,7 @@
 ---
-- name: "Installation du serveur apache httpd"
+- name: "Installation du serveur apache httpd et prise en charge SSL"
   yum:
-          name: httpd
+          name: httpd, mod_ssl
           state: present
           update_cache: yes
 

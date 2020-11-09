@@ -3,8 +3,12 @@
   shell: "/usr/bin/find ${webserver_path}/wp-config.php -type f || wp core download --path=${webserver_path}"
 
 - name: Configuration de base de Wordress
-  shell: "/usr/bin/find ${webserver_path}/wp-config.php -type f || wp config create --locale=fr_FR --dbhost=${db_server} --dbname=${db_name} --dbuser=${db_user} --dbpass=${db_pass} --path=${webserver_path}"
+  shell: "/usr/bin/find ${webserver_path}/wp-config.php -type f || wp config create --locale=fr_FR --url=${final_url} --dbhost=${db_server} --dbname=${db_name} --dbuser=${db_user} --dbpass=${db_pass} --path=${webserver_path}"
 
 - name: Préparation de la Base de Données de Wordpress
-  shell: "wp core install --url=mllec.akrour.fr --title=\"MlleC\" --admin_user=mllec --admin_password=mllec --admin_email=ali@akrour.fr --path=${webserver_path}"
+  shell: "wp core install --url=${final_url} --title=${website_title} --admin_user=${website_admin} --admin_password=${website_admin_pass} --admin_email=${website_admin_email} --path=${webserver_path}"
+
+- name: Mise à jour URL et HOME de Wordpress
+  shell: "wp option update siteurl '${final_url}'; wp option update home '${final_url}' --path=${webserver_path}"
+
 

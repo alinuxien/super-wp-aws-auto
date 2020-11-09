@@ -67,3 +67,29 @@ variable "database-password" {
   description = "Password utlisateur pour connexion à la BD"
   default     = "alinuxien"
 }
+
+variable "final_url" {
+  type        = string
+  description = "URL finale et reelle du site Web"
+}
+
+variable "website_title" {
+  type        = string
+  description = "Titre du site Web"
+}
+
+variable "website_admin" {
+  type        = string
+  description = "Nom utilisateur admin du site Web"
+}
+
+variable "website_admin_pass" {
+  type        = string
+  description = "Mot de passe admin du site Web"
+}
+
+variable "website_admin_email" {
+  type        = string
+  description = "Adresse email admin du site Web"
+}
+
