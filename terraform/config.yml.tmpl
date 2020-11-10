@@ -12,7 +12,7 @@
   shell: "wp option update siteurl '${final_url}' --allow-root; wp option update home '${final_url}' --path=${webserver_path} --allow-root"
 
 - name: Installation et activation du plugin MemCached de WordPress
-  shell: "wp plugin install use-memcached --activate || wp plugin status use-memcached --allow-root"
+  shell: "wp plugin install use-memcached --activate --path=${webserver_path} --allow-root || wp plugin status use-memcached --path=${webserver_path} --allow-root"
 
 - name: Changement groupe et user dossiers et fichiers
   file:
