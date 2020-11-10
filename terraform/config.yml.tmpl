@@ -1,14 +1,30 @@
 ---
 - name: Téléchargement de Wordpress
-  shell: "/usr/bin/find ${webserver_path}/wp-config.php -type f || wp core download --path=${webserver_path}"
+  shell: "/usr/bin/find ${webserver_path}/wp-config.php -type f || wp core download --path=${webserver_path} --allow-root"
 
 - name: Configuration de base de Wordress
-  shell: "/usr/bin/find ${webserver_path}/wp-config.php -type f || wp config create --locale=fr_FR --url=${final_url} --dbhost=${db_server} --dbname=${db_name} --dbuser=${db_user} --dbpass=${db_pass} --path=${webserver_path}"
+  shell: "/usr/bin/find ${webserver_path}/wp-config.php -type f || wp config create --locale=fr_FR --url=${final_url} --dbhost=${db_server} --dbname=${db_name} --dbuser=${db_user} --dbpass=${db_pass} --path=${webserver_path} --allow-root"
 
 - name: Préparation de la Base de Données de Wordpress
-  shell: "wp core install --url=${final_url} --title=${website_title} --admin_user=${website_admin} --admin_password=${website_admin_pass} --admin_email=${website_admin_email} --path=${webserver_path}"
+  shell: "wp core install --url=${final_url} --title=${website_title} --admin_user=${website_admin} --admin_password=${website_admin_pass} --admin_email=${website_admin_email} --path=${webserver_path} --allow-root || wp db check --allow-root"
 
 - name: Mise à jour URL et HOME de Wordpress
-  shell: "wp option update siteurl '${final_url}'; wp option update home '${final_url}' --path=${webserver_path}"
+  shell: "wp option update siteurl '${final_url}' --allow-root; wp option update home '${final_url}' --path=${webserver_path} --allow-root"
 
+- name: Installation et activation du plugin MemCached de WordPress
+  shell: "wp plugin install use-memcached --activate || wp plugin status use-memcached --allow-root"
+
+- name: Changement groupe et user dossiers et fichiers
+  file:
+      path: ${webserver_path}
+      owner: apache
+      group: apache
+      state: directory
+      recurse: yes
+
+- name: Modification permissions dossiers
+  shell: "/usr/bin/find ${webserver_path} -type d -exec chmod -R 750 {} \\;"
+
+- name: Modification permissions fichiers
+  shell: "/usr/bin/find ${webserver_path} -type f -exec chmod -R 640 {} \\;"
 

@@ -1,5 +1,5 @@
 locals {
-  custom_origin_id = "mon_origine_alb"
+  custom_origin_id = "origine_alb"
 }
 
 resource "aws_cloudfront_distribution" "cloudfront" {
@@ -13,7 +13,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
       http_port              = "80"
       https_port             = "443"
       origin_protocol_policy = "match-viewer"
-      origin_ssl_protocols   = ["SSLv3"]
+      origin_ssl_protocols   = ["TLSv1"]
     }
   }
 
@@ -23,24 +23,25 @@ resource "aws_cloudfront_distribution" "cloudfront" {
 
   restrictions {
     geo_restriction {
-      restriction_type = "whitelist"
-      locations        = ["FR"]
+      restriction_type = "none"
     }
   }
 
   viewer_certificate {
-    acm_certificate_arn = data.aws_acm_certificate.mllec_cloudfront.arn
-    ssl_support_method  = "sni-only"
+    cloudfront_default_certificate = false
+    acm_certificate_arn            = data.aws_acm_certificate.mllec_cloudfront.arn
+    ssl_support_method             = "sni-only"
+    minimum_protocol_version       = "TLSv1"
   }
 
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
+    allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods   = ["GET", "HEAD", "OPTIONS"]
     target_origin_id = local.custom_origin_id
 
     forwarded_values {
       query_string = true
-      headers      = ["Host", "Origin"]
+      headers      = ["*"]
 
       cookies {
         forward = "all"

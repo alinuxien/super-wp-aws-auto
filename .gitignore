@@ -4,3 +4,4 @@ terraform.tfvars
 *.backup
 ssh
 inventory
+config.yml
