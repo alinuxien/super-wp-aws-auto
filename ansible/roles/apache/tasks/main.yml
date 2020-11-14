@@ -1,7 +1,8 @@
 ---
 - name: Mise à jour des Instances
   shell: "yum update -y"
-  warn: false
+  args:
+      warn: no
 
 - name: "Installation du serveur apache httpd et prise en charge SSL"
   yum:

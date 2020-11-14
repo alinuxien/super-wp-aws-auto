@@ -117,60 +117,16 @@ resource "aws_lb_listener" "alb-listener-secure" {
   }
 }
 
-resource "aws_lb_target_group" "tg1" {
-  name     = "tg1"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
-  stickiness {
-    enabled         = true
-    type            = "lb_cookie"
-    cookie_duration = "86400"
-  }
-}
-
-resource "aws_lb_target_group_attachment" "tg1" {
-  target_group_arn = aws_lb_target_group.tg1.arn
-  target_id        = aws_instance.webserver1.id
-  port             = 80
-}
-
-resource "aws_lb_target_group" "tg2" {
-  name     = "tg2"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
-  stickiness {
-    enabled         = true
-    type            = "lb_cookie"
-    cookie_duration = "86400"
-  }
-}
-
-resource "aws_lb_target_group_attachment" "tg2" {
-  target_group_arn = aws_lb_target_group.tg2.arn
-  target_id        = aws_instance.webserver2.id
-  port             = 80
-}
-
 resource "aws_lb_listener" "alb-listener" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
-
   default_action {
-    type = "forward"
-    forward {
-      target_group {
-        arn = aws_lb_target_group.tg1.arn
-      }
-      target_group {
-        arn = aws_lb_target_group.tg2.arn
-      }
-      stickiness {
-        enabled  = true
-        duration = "86400"
-      }
+    type = "redirect"
+    redirect {
+      protocol    = "HTTPS"
+      port        = 443
+      status_code = "HTTP_302"
     }
   }
 }

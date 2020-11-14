@@ -7,7 +7,8 @@
 
 - name: Préparation de la Base de Données de Wordpress
   shell: "wp core install --url=${final_url} --title=${website_title} --admin_user=${website_admin} --admin_password=${website_admin_pass} --admin_email=${website_admin_email} --path=${webserver_path} --allow-root || wp db check --path=${webserver_path} --allow-root"
-
+  when: inventory_hostname in groups['dbinitiator']
+  
 - name: Mise à jour URL et HOME de Wordpress
   shell: "wp option update siteurl '${final_url}' --path=${webserver_path} --allow-root; wp option update home '${final_url}' --path=${webserver_path} --allow-root"
 
