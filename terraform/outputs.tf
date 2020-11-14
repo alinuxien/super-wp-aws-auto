@@ -14,9 +14,9 @@ output alb_dns_name {
   value = aws_lb.alb.dns_name
 }
 
-#output cloud_front_dns_name {
-#  value = aws_cloudfront_distribution.cloudfront.domain_name
-#}
+output cloud_front_dns_name {
+  value = aws_cloudfront_distribution.cloudfront.domain_name
+}
 
 output rds_address {
   value = aws_db_instance.database.address

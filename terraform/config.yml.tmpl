@@ -15,6 +15,10 @@
 - name: Installation et activation du plugin WP-FFPC ( MemCached ) de WordPress
   shell: "wp plugin install wp-ffpc --activate --path=${webserver_path} --allow-root || wp plugin status wp-ffpc --path=${webserver_path} --allow-root"
 
+- name: Connexion du plugin WP-FFPC sur le serveur dédié MemCached
+  shell: "wp config set WP_CACHE true --path=${webserver_path} --raw --allow-root"
+
+
 - name: Changement groupe et user dossiers et fichiers
   file:
       path: ${webserver_path}
