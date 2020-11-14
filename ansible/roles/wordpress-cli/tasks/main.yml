@@ -1,5 +1,5 @@
 ---
-- name: Installation
+- name: Installation de PHP CLI et WP CLI
   yum:
       name: "php-cli, wp-cli"
       state: present

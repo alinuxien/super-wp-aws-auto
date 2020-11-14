@@ -45,32 +45,110 @@ resource "aws_security_group_rule" "out_https" {
 }
 
 resource "aws_lb" "alb" {
-  name               = "alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb.id]
-  subnets            = [aws_subnet.public-a.id, aws_subnet.public-b.id]
+  name                       = "alb"
+  internal                   = false
+  load_balancer_type         = "application"
+  drop_invalid_header_fields = true
+  security_groups            = [aws_security_group.alb.id]
+  subnets                    = [aws_subnet.public-a.id, aws_subnet.public-b.id]
 
   tags = {
     name = "mllec-alb"
   }
 }
 
-resource "aws_lb_target_group" "target-group" {
-  name     = "webserver-tg"
+resource "aws_lb_target_group" "tgs1" {
+  name     = "tgs1"
+  port     = 443
+  protocol = "HTTPS"
+  vpc_id   = aws_vpc.main.id
+  stickiness {
+    enabled         = true
+    type            = "lb_cookie"
+    cookie_duration = "86400"
+  }
+}
+
+resource "aws_lb_target_group_attachment" "tgs1" {
+  target_group_arn = aws_lb_target_group.tgs1.arn
+  target_id        = aws_instance.webserver1.id
+  port             = 443
+}
+
+resource "aws_lb_target_group" "tgs2" {
+  name     = "tgs2"
+  port     = 443
+  protocol = "HTTPS"
+  vpc_id   = aws_vpc.main.id
+  stickiness {
+    enabled         = true
+    type            = "lb_cookie"
+    cookie_duration = "86400"
+  }
+}
+
+resource "aws_lb_target_group_attachment" "tgs2" {
+  target_group_arn = aws_lb_target_group.tgs2.arn
+  target_id        = aws_instance.webserver2.id
+  port             = 443
+}
+
+resource "aws_lb_listener" "alb-listener-secure" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-FS-2018-06"
+  certificate_arn   = data.aws_acm_certificate.mllec.arn
+
+  default_action {
+    type = "forward"
+    forward {
+      target_group {
+        arn = aws_lb_target_group.tgs1.arn
+      }
+      target_group {
+        arn = aws_lb_target_group.tgs2.arn
+      }
+      stickiness {
+        enabled  = true
+        duration = "86400"
+      }
+    }
+  }
+}
+
+resource "aws_lb_target_group" "tg1" {
+  name     = "tg1"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
+  stickiness {
+    enabled         = true
+    type            = "lb_cookie"
+    cookie_duration = "86400"
+  }
 }
 
-resource "aws_lb_target_group_attachment" "tg-webserver1" {
-  target_group_arn = aws_lb_target_group.target-group.arn
+resource "aws_lb_target_group_attachment" "tg1" {
+  target_group_arn = aws_lb_target_group.tg1.arn
   target_id        = aws_instance.webserver1.id
   port             = 80
 }
 
-resource "aws_lb_target_group_attachment" "tg-webserver2" {
-  target_group_arn = aws_lb_target_group.target-group.arn
+resource "aws_lb_target_group" "tg2" {
+  name     = "tg2"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.main.id
+  stickiness {
+    enabled         = true
+    type            = "lb_cookie"
+    cookie_duration = "86400"
+  }
+}
+
+resource "aws_lb_target_group_attachment" "tg2" {
+  target_group_arn = aws_lb_target_group.tg2.arn
   target_id        = aws_instance.webserver2.id
   port             = 80
 }
@@ -81,44 +159,19 @@ resource "aws_lb_listener" "alb-listener" {
   protocol          = "HTTP"
 
   default_action {
-    type = "redirect"
-    redirect {
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
+    type = "forward"
+    forward {
+      target_group {
+        arn = aws_lb_target_group.tg1.arn
+      }
+      target_group {
+        arn = aws_lb_target_group.tg2.arn
+      }
+      stickiness {
+        enabled  = true
+        duration = "86400"
+      }
     }
-  }
-}
-
-resource "aws_lb_target_group" "target-group-secure" {
-  name     = "webserver-tg-secure"
-  port     = 443
-  protocol = "HTTPS"
-  vpc_id   = aws_vpc.main.id
-}
-
-resource "aws_lb_target_group_attachment" "tg-secure-webserver1" {
-  target_group_arn = aws_lb_target_group.target-group-secure.arn
-  target_id        = aws_instance.webserver1.id
-  port             = 443
-}
-
-resource "aws_lb_target_group_attachment" "tg-secure-webserver2" {
-  target_group_arn = aws_lb_target_group.target-group-secure.arn
-  target_id        = aws_instance.webserver2.id
-  port             = 443
-}
-
-resource "aws_lb_listener" "alb-listener-secure" {
-  load_balancer_arn = aws_lb.alb.arn
-  port              = 443
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = data.aws_acm_certificate.mllec.arn
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.target-group-secure.arn
   }
 }
 
