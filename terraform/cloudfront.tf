@@ -38,7 +38,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
 
       cookies {
         forward           = "whitelist"
-        whitelisted_names = ["comment_author_*", "comment_author_email_*", "comment_author_url_*", "wordpress_*", "wordpress_logged_in_*", "wordpress_test_cookie", "wp-settings-*"]
+        whitelisted_names = ["comment_author_*", "comment_author_email_*", "comment_author_url_*", "wordpress_*", "wordpress_logged_in_*", "wordpress_test_cookie", "wp-settings-*", "AWSALB*"]
       }
     }
     compress               = true
