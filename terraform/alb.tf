@@ -57,8 +57,8 @@ resource "aws_lb" "alb" {
   }
 }
 
-resource "aws_lb_target_group" "tgs1" {
-  name     = "tgs1"
+resource "aws_lb_target_group" "tgs" {
+  name     = "tgs"
   port     = 443
   protocol = "HTTPS"
   vpc_id   = aws_vpc.main.id
@@ -70,25 +70,13 @@ resource "aws_lb_target_group" "tgs1" {
 }
 
 resource "aws_lb_target_group_attachment" "tgs1" {
-  target_group_arn = aws_lb_target_group.tgs1.arn
+  target_group_arn = aws_lb_target_group.tgs.arn
   target_id        = aws_instance.webserver1.id
   port             = 443
 }
 
-resource "aws_lb_target_group" "tgs2" {
-  name     = "tgs2"
-  port     = 443
-  protocol = "HTTPS"
-  vpc_id   = aws_vpc.main.id
-  stickiness {
-    enabled         = true
-    type            = "lb_cookie"
-    cookie_duration = "86400"
-  }
-}
-
 resource "aws_lb_target_group_attachment" "tgs2" {
-  target_group_arn = aws_lb_target_group.tgs2.arn
+  target_group_arn = aws_lb_target_group.tgs.arn
   target_id        = aws_instance.webserver2.id
   port             = 443
 }
@@ -101,19 +89,8 @@ resource "aws_lb_listener" "alb-listener-secure" {
   certificate_arn   = data.aws_acm_certificate.mllec.arn
 
   default_action {
-    type = "forward"
-    forward {
-      target_group {
-        arn = aws_lb_target_group.tgs1.arn
-      }
-      target_group {
-        arn = aws_lb_target_group.tgs2.arn
-      }
-      stickiness {
-        enabled  = true
-        duration = "86400"
-      }
-    }
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.tgs.arn
   }
 }
 
