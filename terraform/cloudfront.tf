@@ -15,7 +15,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
     }
   }
   price_class  = "PriceClass_100"
-  aliases      = ["mllec.akrour.fr"]
+  aliases      = [var.domain]
   http_version = "http2"
   restrictions {
     geo_restriction {
@@ -24,7 +24,7 @@ resource "aws_cloudfront_distribution" "cloudfront" {
   }
   viewer_certificate {
     cloudfront_default_certificate = false
-    acm_certificate_arn            = data.aws_acm_certificate.mllec_cloudfront.arn
+    acm_certificate_arn            = data.aws_acm_certificate.cloudfront.arn
     ssl_support_method             = "sni-only"
     minimum_protocol_version       = "TLSv1.1_2016"
   }

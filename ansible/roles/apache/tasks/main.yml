@@ -1,22 +1,22 @@
 ---
-- name: Mise à jour des Instances
+- name: Mise à jour Système des Instances
   shell: "yum update -y"
   args:
       warn: no
 
-- name: "Installation du serveur apache httpd et prise en charge SSL"
+- name: Installation httpd et prise en charge SSL
   yum:
           name: httpd, mod_ssl
           state: present
           update_cache: yes
 
-- name: "Activation du service apache"
+- name: Activation du service httpd
   service:
           name: httpd
           state: started
           enabled: yes
 
-- name: "Installation des paquets PHP"
-  include: "php7-install.yml"
+- name: Installation des compléments
+  include: "php7-depots.yml"
   when: php_install|default(False)|bool
 

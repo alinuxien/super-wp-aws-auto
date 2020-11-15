@@ -68,14 +68,15 @@ variable "database-password" {
   default     = "alinuxien"
 }
 
-variable "final_url" {
+variable "domain" {
   type        = string
-  description = "URL finale et reelle du site Web"
+  description = "Nom de domaine du site Web"
 }
 
 variable "website_title" {
   type        = string
   description = "Titre du site Web"
+  default     = "YourWebSite"
 }
 
 variable "website_admin" {

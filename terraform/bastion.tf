@@ -1,10 +1,10 @@
 resource "aws_security_group" "allow-ssh" {
-  name        = "allow-ssh"
-  description = "Autoriser le traffic SSH entrant et sortant"
+  name        = "bastion"
+  description = "Security Group du Bastion SSH"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "SSH depuis partout"
+    description = "autorise le SSH entrant depuis partout"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -12,7 +12,7 @@ resource "aws_security_group" "allow-ssh" {
   }
 
   egress {
-    description = "SSH vers toutes les machines du VPC"
+    description = "autorise le SSH sortant vers le VPC"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -20,7 +20,7 @@ resource "aws_security_group" "allow-ssh" {
   }
 
   tags = {
-    Name = "allow-ssh"
+    Name = "bastion"
   }
 }
 

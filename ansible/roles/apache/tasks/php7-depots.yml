@@ -1,5 +1,5 @@
 ---
-- name: "Ajout des dépots PHP 7.4 et EPEL"
+- name: Ajout des dépots PHP 7.4 et EPEL
   shell: amazon-linux-extras enable php7.4 epel
 
 - include_tasks: "php7-extensions.yml"

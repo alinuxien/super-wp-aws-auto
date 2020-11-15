@@ -1,4 +1,4 @@
-- name: "Installation de PHP 7.4 et extentions, Client MySQL"
+- name: Installation de PHP 7.4 et extensions
   yum:
           name: "epel-release, php-common, php-fpm, php-gd, php-intl, php-json, php-mbstring, php-mysqlnd, php-xml, php-pear, php-devel, php-memcached, ImageMagick, mysql"
           state: present

@@ -1,0 +1,6 @@
+---
+- name: "Installation de Wordpress"
+  hosts: webservers
+  roles:
+          - role: "wordpress"
+

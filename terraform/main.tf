@@ -3,7 +3,6 @@ provider "aws" {
 }
 
 provider "aws" {
-  # us-east-1 instance
   region = "us-east-1"
   alias  = "use1"
 }
@@ -14,17 +13,17 @@ data "local_file" "local-pub-key" {
   filename = var.public_key_file
 }
 
-data "aws_acm_certificate" "mllec_cloudfront" {
+data "aws_acm_certificate" "cloudfront" {
   provider = aws.use1
-  domain   = "mllec.akrour.fr"
+  domain   = var.domain
 }
 
-data "aws_acm_certificate" "mllec" {
-  domain = "mllec.akrour.fr"
+data "aws_acm_certificate" "cert" {
+  domain = var.domain
 }
 
 data "aws_route53_zone" "primary" {
-  name = "mllec.akrour.fr"
+  name = var.domain
 }
 
 resource "aws_key_pair" "keypair" {

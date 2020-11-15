@@ -23,15 +23,15 @@ output rds_address {
 }
 
 output memcached_address {
-  value = aws_elasticache_cluster.mllec.cluster_address
+  value = aws_elasticache_cluster.cache.cluster_address
 }
 
 output memcached_configuration_endpoint {
-  value = aws_elasticache_cluster.mllec.configuration_endpoint
+  value = aws_elasticache_cluster.cache.configuration_endpoint
 }
 
 resource "local_file" "AnsibleInventory" {
-  content = templatefile("inventory.tmpl", {
+  content = templatefile("../ansible/inventory.tmpl", {
     bastion-dns      = aws_instance.bastion.private_dns,
     bastion-ip       = aws_instance.bastion.public_ip,
     bastion-id       = aws_instance.bastion.id,
@@ -49,19 +49,19 @@ resource "local_file" "AnsibleInventory" {
 }
 
 resource "local_file" "AnsibleWPCLIConfig" {
-  content = templatefile("config.yml.tmpl", {
+  content = templatefile("../ansible/roles/wordpress/tasks/config.yml.tmpl", {
     db_server           = aws_db_instance.database.address,
     db_name             = var.database-name,
     db_user             = var.database-username,
     db_pass             = var.database-password,
     webserver_path      = var.webserver-homepage-path,
-    final_url           = var.final_url,
+    final_url           = format("https://%s", var.domain)
     website_title       = var.website_title,
     website_admin       = var.website_admin,
     website_admin_pass  = var.website_admin_pass,
     website_admin_email = var.website_admin_email,
-    memchached_server   = aws_elasticache_cluster.mllec.configuration_endpoint
+    memchached_server   = aws_elasticache_cluster.cache.configuration_endpoint
   })
-  filename = "../ansible/roles/wordpress-cli/tasks/config.yml"
+  filename = "../ansible/roles/wordpress/tasks/config.yml"
 }
 

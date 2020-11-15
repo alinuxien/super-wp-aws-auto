@@ -1,6 +1,6 @@
-resource "aws_route53_record" "mllec" {
+resource "aws_route53_record" "A-record" {
   zone_id = data.aws_route53_zone.primary.zone_id
-  name    = "mllec.akrour.fr"
+  name    = var.domain
   type    = "A"
 
   alias {

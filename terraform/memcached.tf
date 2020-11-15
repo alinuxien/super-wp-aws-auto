@@ -5,11 +5,11 @@ resource "aws_elasticache_subnet_group" "default" {
 
 resource "aws_security_group" "cache" {
   name        = "cache"
-  description = "Autoriser le traffic MemCached entrant et sortant depuis le VPC"
+  description = "Security Group de Elastic Cache"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "MemCached VPC"
+    description = "autorise le traffic MemCached entrant depuis le VPC"
     from_port   = 11211
     to_port     = 11211
     protocol    = "tcp"
@@ -17,7 +17,7 @@ resource "aws_security_group" "cache" {
   }
 
   egress {
-    description = "MemCached VPC"
+    description = "autorise le traffic MemCached sortant vers le VPC"
     from_port   = 11211
     to_port     = 11211
     protocol    = "tcp"
@@ -30,8 +30,8 @@ resource "aws_security_group" "cache" {
 }
 
 
-resource "aws_elasticache_cluster" "mllec" {
-  cluster_id           = "cluster-mllec"
+resource "aws_elasticache_cluster" "cache" {
+  cluster_id           = "cache-cluster"
   engine               = "memcached"
   node_type            = "cache.t2.micro"
   num_cache_nodes      = 1
@@ -40,5 +40,4 @@ resource "aws_elasticache_cluster" "mllec" {
   subnet_group_name    = aws_elasticache_subnet_group.default.name
   security_group_ids   = [aws_security_group.cache.id]
   apply_immediately    = true
-
 }

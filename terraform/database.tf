@@ -8,12 +8,12 @@ resource "aws_db_subnet_group" "default" {
 }
 
 resource "aws_security_group" "db" {
-  name        = "db"
-  description = "Autoriser le traffic MySQL entrant et sortant depuis le VPC"
+  name        = "database"
+  description = "Security Group de la BDD"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "MySQL VPC"
+    description = "autorise le traffic MySQL entrant depuis le VPC"
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
@@ -21,7 +21,7 @@ resource "aws_security_group" "db" {
   }
 
   egress {
-    description = "MySQL VPC"
+    description = "autorise le traffic MYSQL sortant vers le VPC"
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
@@ -29,7 +29,7 @@ resource "aws_security_group" "db" {
   }
 
   tags = {
-    Name = "db"
+    Name = "database"
   }
 }
 
@@ -50,7 +50,7 @@ resource "aws_db_instance" "database" {
   username               = var.database-username
   password               = var.database-password
   tags = {
-    Name = "mllec"
+    Name = var.website_title
   }
 }
 
