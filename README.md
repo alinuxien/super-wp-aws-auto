@@ -1,4 +1,4 @@
-# super-wp-aws-auto
+# Super WordPress chez AWS en Automatique
 
 # Bienvenue sur mon projet de migration vers le Cloud AWS d'un Site Wordpress
 Il s'agit d'un projet réalisé en Octobre et Novembre 2020 dans le cadre de ma formation "Expert DevOps" chez OpenClassRooms.
