@@ -73,6 +73,12 @@ variable "domain" {
   description = "Nom de domaine du site Web"
 }
 
+variable "es-domain" {
+  type        = string
+  description = "Nom de domaine du site Web"
+  default     = "elastic"
+}
+
 variable "website_title" {
   type        = string
   description = "Titre du site Web"

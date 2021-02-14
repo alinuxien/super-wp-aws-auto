@@ -1,33 +1,41 @@
-output bastion_ip {
+output "bastion_ip" {
   value = aws_instance.bastion.public_ip
 }
 
-output webserver1_ip {
+output "webserver1_ip" {
   value = aws_instance.webserver1.private_ip
 }
 
-output webserver2_ip {
+output "webserver2_ip" {
   value = aws_instance.webserver2.private_ip
 }
 
-output alb_dns_name {
+output "alb_dns_name" {
   value = aws_lb.alb.dns_name
 }
 
-output cloud_front_dns_name {
+output "cloud_front_dns_name" {
   value = aws_cloudfront_distribution.cloudfront.domain_name
 }
 
-output rds_address {
+output "rds_address" {
   value = aws_db_instance.database.address
 }
 
-output memcached_address {
+output "memcached_address" {
   value = aws_elasticache_cluster.cache.cluster_address
 }
 
-output memcached_configuration_endpoint {
+output "memcached_configuration_endpoint" {
   value = aws_elasticache_cluster.cache.configuration_endpoint
+}
+
+output "kibana_endpoint" {
+  value = aws_elasticsearch_domain.es.kibana_endpoint
+}
+
+output "ssh_tunneling_command" {
+  value = format("ssh -v -N %s@%s -J %s@%s -L 1443:%s:443 &", var.webservers-user, aws_instance.webserver1.private_ip, var.bastion-user, aws_instance.bastion.public_ip, aws_elasticsearch_domain.es.endpoint)
 }
 
 resource "local_file" "AnsibleInventory" {
