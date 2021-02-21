@@ -1,4 +1,4 @@
-resource "null_resource" "plays" {
+resource "null_resource" "plays_wordpress" {
   provisioner "local-exec" {
     command = "ansible-playbook -i ../ansible/inventory ../ansible/install-apache.yml"
   }

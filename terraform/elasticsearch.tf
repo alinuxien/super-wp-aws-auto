@@ -39,7 +39,7 @@ resource "aws_elasticsearch_domain" "es" {
   elasticsearch_version = "7.9"
 
   cluster_config {
-    instance_type            = "t2.small.elasticsearch"
+    instance_type            = "t3.small.elasticsearch"
     instance_count           = "1"
     zone_awareness_enabled   = false
     dedicated_master_enabled = false
@@ -62,7 +62,7 @@ resource "aws_elasticsearch_domain" "es" {
   }
 
   advanced_options = {
-    "rest.action.multi.allow_explicit_index" = "false"
+    "rest.action.multi.allow_explicit_index" = "true"
   }
 
   access_policies = <<CONFIG
@@ -83,5 +83,5 @@ CONFIG
     Domain = "es.mllec.akrour.fr"
   }
 
-  depends_on = [aws_vpc.main]
+  depends_on = [aws_vpc.main, aws_iam_service_linked_role.es]
 }

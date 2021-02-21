@@ -1,0 +1,28 @@
+---
+- name: Ajout de la clé de dépôt OSS des Beats
+  rpm_key:
+    state: present
+    key: https://packages.elastic.co/GPG-KEY-elasticsearch
+
+- name: Création du fichier de dépôt Elastic pour Yum
+  copy:
+    src: elastic.repo
+    dest: /etc/yum.repos.d/elastic.repo
+
+- name: Installation de MetricBeat
+  yum:
+    name: metricbeat-7.9.1-1
+    state: present
+    update_cache: yes
+
+- name: Copie du fichier de Configuration MetricBeat Généré
+  copy:
+    src: metricbeat.yml
+    dest: /etc/metricbeat/metricbeat.yml
+
+- name: Activation du service Metricbeat
+  service:
+    name: metricbeat
+    state: started
+    enabled: yes
+

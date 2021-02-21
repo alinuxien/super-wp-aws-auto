@@ -1,0 +1,6 @@
+---
+- name: "Installation et Configuration de MetricBeat"
+  hosts: webservers
+  roles:
+          - role: "metricbeat"
+

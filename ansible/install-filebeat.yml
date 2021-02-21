@@ -1,0 +1,6 @@
+---
+- name: "Installation et Configuration de FileBeat"
+  hosts: webservers
+  roles:
+          - role: "filebeat"
+

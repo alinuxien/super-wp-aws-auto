@@ -73,3 +73,19 @@ resource "local_file" "AnsibleWPCLIConfig" {
   filename = "../ansible/roles/wordpress/tasks/config.yml"
 }
 
+resource "local_file" "MetricBeatConfig" {
+  content = templatefile("../ansible/roles/metricbeat/tasks/metricbeat.tmpl", {
+    kibana_endpoint        = format("https://%s:443/_plugin/kibana", aws_elasticsearch_domain.es.endpoint)
+    elasticsearch_endpoint = format("https://%s:443", aws_elasticsearch_domain.es.endpoint)
+  })
+  filename = "../ansible/roles/metricbeat/tasks/metricbeat.yml"
+}
+
+resource "local_file" "FileBeatConfig" {
+  content = templatefile("../ansible/roles/filebeat/tasks/filebeat.tmpl", {
+    kibana_endpoint        = format("https://%s:443/_plugin/kibana", aws_elasticsearch_domain.es.endpoint)
+    elasticsearch_endpoint = format("https://%s:443", aws_elasticsearch_domain.es.endpoint)
+  })
+  filename = "../ansible/roles/filebeat/tasks/filebeat.yml"
+}
+
