@@ -39,15 +39,18 @@ resource "aws_elasticsearch_domain" "es" {
   elasticsearch_version = "7.9"
 
   cluster_config {
-    instance_type            = "t3.medium.elasticsearch"
-    instance_count           = "2"
-    zone_awareness_enabled   = false
+    instance_type          = "t3.medium.elasticsearch"
+    instance_count         = "2"
+    zone_awareness_enabled = true
+    zone_awareness_config {
+      availability_zone_count = 2
+    }
     dedicated_master_enabled = false
     warm_enabled             = false
   }
 
   vpc_options {
-    subnet_ids         = [aws_subnet.private-b2.id]
+    subnet_ids         = [aws_subnet.private-a2.id, aws_subnet.private-b2.id]
     security_group_ids = [aws_security_group.es.id]
   }
 
