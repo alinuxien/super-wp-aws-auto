@@ -20,7 +20,15 @@
     src: metricbeat.yml
     dest: /etc/metricbeat/metricbeat.yml
 
-- name: Activation du service Metricbeat
+- name: Activation du module Apache de MetricBeat
+  ansible.builtin.shell: metricbeat modules enable apache    
+
+- name: Copie du fichier de Configuration du Module Apache de MetricBeat
+  copy:
+    src: metricbeat_module_apache.yml 
+    dest: /etc/metricbeat/modules.d/apache.yml
+
+- name: Activation et Démarrage du service Metricbeat
   service:
     name: metricbeat
     state: started

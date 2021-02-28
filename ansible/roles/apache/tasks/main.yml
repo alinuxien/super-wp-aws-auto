@@ -10,7 +10,12 @@
           state: present
           update_cache: yes
 
-- name: Activation du service httpd
+- name: Copie du fichier de Configuration Apache personnalisé
+  copy:
+    src: httpd.conf
+    dest: /etc/httpd/conf/httpd.conf
+
+- name: Activation et Démarrage du service httpd
   service:
           name: httpd
           state: started

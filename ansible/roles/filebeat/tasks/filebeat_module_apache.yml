@@ -1,0 +1,13 @@
+- module: apache
+  access:
+    enabled: true
+    var.paths: 
+      - /var/log/httpd/access_log
+      - /var/log/httpd/ssl_access_log
+      - /var/log/httpd/ssl_request_log
+  error:
+    enabled: true
+    var.paths: 
+      - /var/log/httpd/error_log
+      - /var/log/httpd/ssl_error_log
+
