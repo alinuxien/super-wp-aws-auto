@@ -4,3 +4,5 @@
 ssh
 inventory
 config.yml
+filebeat.yml
+metricbeat.yml
