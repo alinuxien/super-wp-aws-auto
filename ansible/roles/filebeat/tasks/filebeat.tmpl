@@ -22,7 +22,8 @@ setup.kibana:
 output.logstash:
   hosts: ["${logstash1_endpoint}","${logstash2_endpoint}"]
   protocol: "https"
-  loadbalance: true
+  enabled: true
+  loadbalance: false
 processors:
   - add_host_metadata:
       when.not.contains.tags: forwarded
