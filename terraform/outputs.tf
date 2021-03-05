@@ -51,6 +51,12 @@ resource "local_file" "AnsibleInventory" {
     webserver2-ip    = aws_instance.webserver2.private_ip,
     webserver2-id    = aws_instance.webserver2.id,
     webservers-user  = var.webservers-user,
+    logstash1-dns    = aws_instance.logstash1.private_dns,
+    logstash1-ip     = aws_instance.logstash1.private_ip,
+    logstash1-id     = aws_instance.logstash1.id
+    logstash2-dns    = aws_instance.logstash2.private_dns,
+    logstash2-ip     = aws_instance.logstash2.private_ip,
+    logstash2-id     = aws_instance.logstash2.id,
     private_key_file = var.private_key_file
   })
   filename = "../ansible/inventory"
@@ -83,8 +89,9 @@ resource "local_file" "MetricBeatConfig" {
 
 resource "local_file" "FileBeatConfig" {
   content = templatefile("../ansible/roles/filebeat/tasks/filebeat.tmpl", {
-    kibana_endpoint        = format("https://%s:443/_plugin/kibana", aws_elasticsearch_domain.es.endpoint)
-    elasticsearch_endpoint = format("https://%s:443", aws_elasticsearch_domain.es.endpoint)
+    kibana_endpoint    = format("https://%s:443/_plugin/kibana", aws_elasticsearch_domain.es.endpoint)
+    logstash1_endpoint = format("%s:5044", aws_instance.logstash1.private_ip)
+    logstash2_endpoint = format("%s:5044", aws_instance.logstash2.private_ip)
   })
   filename = "../ansible/roles/filebeat/tasks/filebeat.yml"
 }

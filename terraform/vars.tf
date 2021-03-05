@@ -16,6 +16,19 @@ variable "instance-type-webserver" {
   default     = "t2.micro"
 }
 
+variable "instance-type-elasticsearch" {
+  type        = string
+  description = "Type d'Instance à utiliser pour le Cluster ElasticSearch"
+  default     = "t3.medium.elasticsearch"
+}
+
+variable "instance-type-logstash" {
+  type        = string
+  description = "Type d'Instance à utiliser pour le serveur LogStash"
+  default     = "t3.small"
+}
+
+
 variable "webserver-homepage-path" {
   type        = string
   description = "Chemin complet et absolu des pages Web sur le serveur Web"

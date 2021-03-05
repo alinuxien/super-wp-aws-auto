@@ -1,0 +1,6 @@
+---
+- name: "Installation et Configuration de LogStash"
+  hosts: logstashes
+  roles:
+          - role: "logstash"
+

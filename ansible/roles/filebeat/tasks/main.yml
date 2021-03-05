@@ -31,26 +31,6 @@
     src: filebeat_module_apache.yml 
     dest: /etc/filebeat/modules.d/apache.yml
     
-- name: Copie du Pipeline du Module System de FileBeat sans GEOIP
-  copy:
-    src: filebeat_module_system_pipeline.yml 
-    dest: /usr/share/filebeat/module/system/auth/ingest/pipeline.yml
-
-- name: Copie du Pipeline Error du Module Apache de FileBeat sans GEOIP
-  copy:
-    src: filebeat_module_apache_error_pipeline.yml 
-    dest: /usr/share/filebeat/module/apache/error/ingest/pipeline.yml
-    
-- name: Copie du Pipeline Access du Module Apache de FileBeat sans GEOIP
-  copy:
-    src: filebeat_module_apache_access_pipeline.yml 
-    dest: /usr/share/filebeat/module/apache/access/ingest/pipeline.yml
-
-- name: Copie du Manifest Access du Module Apache de FileBeat sans GEOIP
-  copy:
-    src: filebeat_module_apache_access_manifest.yml 
-    dest: /usr/share/filebeat/module/apache/access/manifest.yml
- 
 - name: Activation et Démarrage du service FileBeat
   service:
     name: filebeat

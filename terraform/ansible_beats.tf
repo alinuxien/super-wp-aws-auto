@@ -8,7 +8,8 @@ resource "null_resource" "plays_beats" {
   }
 
   depends_on = [
-    aws_elasticsearch_domain.es
+    aws_elasticsearch_domain.es,
+    null_resource.plays_logstash
   ]
 }
 

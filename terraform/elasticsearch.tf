@@ -39,7 +39,7 @@ resource "aws_elasticsearch_domain" "es" {
   elasticsearch_version = "7.9"
 
   cluster_config {
-    instance_type          = "t3.medium.elasticsearch"
+    instance_type          = var.instance-type-elasticsearch
     instance_count         = "2"
     zone_awareness_enabled = true
     zone_awareness_config {

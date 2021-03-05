@@ -19,9 +19,10 @@ setup.ilm.enabled: false
 setup.ilm.check_exists: false
 setup.kibana:
   host: "${kibana_endpoint}"
-output.elasticsearch:
-  hosts: ["${elasticsearch_endpoint}"]
+output.logstash:
+  hosts: ["${logstash1_endpoint}","${logstash2_endpoint}"]
   protocol: "https"
+  loadbalance: true
 processors:
   - add_host_metadata:
       when.not.contains.tags: forwarded
