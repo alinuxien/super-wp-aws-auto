@@ -96,3 +96,11 @@ resource "local_file" "FileBeatConfig" {
   filename = "../ansible/roles/filebeat/tasks/filebeat.yml"
 }
 
+resource "local_file" "LogStashPipeline" {
+  content = templatefile("../ansible/roles/logstash/tasks/01-mllec.tmpl", {
+    elasticsearch_endpoint = format("https://%s:443", aws_elasticsearch_domain.es.endpoint)
+  })
+  filename = "../ansible/roles/logstash/tasks/01-mllec.conf"
+}
+
+

@@ -21,6 +21,11 @@
     state: present
     update_cache: yes
 
+- name: Copie du fichier de Pipeline LogStash Généré
+  copy:
+    src: 01-mllec.conf
+    dest: /etc/logstash/conf.d/01-mllec.conf
+
 - name: Activation et Démarrage du service LogStash
   service:
     name: logstash
