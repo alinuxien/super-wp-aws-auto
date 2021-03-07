@@ -5,12 +5,10 @@ input {
 }
 filter {
     grok {
-      match => {
-          "message" => "%%{COMBINEDAPACHELOG}"
-      }    
+      match => { "message" => "%%{IPV4:[apache][access][clientip]} - - \[%%{HTTPDATE:[apache][access][time]}\] \"%%{WORD:[apache][access][method]} %%{DATA:[apache][access][url]} HTTP/%%{NUMBER:[apache][access][http_version]}\" %%{NUMBER:[apache][access][response_code]} %%{NUMBER:[apache][access][body_sent][bytes]}" }
     }
     geoip {
-        source => "clientip"
+      source => "[apache][access][clientip]"
     }
 }
 output {
