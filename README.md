@@ -33,7 +33,8 @@ En option, 1 environnement de travail virtuel est [disponible ici](https://githu
 - 1 dossier `terraform` contenant tout le nécessaire pour la création d'infrastructure
 - 1 dossier `ansible` contenant tout le nécessaire pour la configuration des 2 serveurs web
 - 1 fichier `mllec-kibana-dashboard.ndjson` contenant le Dashboard Kibana
- 
+- 1 fichier `config` contenant de la configuration ssh pour permettre le tunneling avec jump ssh
+
 ## J'ai besoin de quoi ?
 - 1 nom de domaine, hébergé chez AWS ou n'importe quel provider DNS ( OVH par exemple )
 - 1 environnement de travail contenant Terraform et Ansible ( [disponible ici](https://github.com/alinuxien/terraform) )
@@ -53,6 +54,7 @@ Ensuite, dans un terminal de l'environnement de travail :
 - faites une copie locale de ce dépot :  `git clone https://github.com/alinuxien/super-wp-aws-auto.git`
 - allez dans le dossier téléchargé : `cd super-wp-aws-auto`, puis dans le dossier terraform : `cd terraform`
 - éditez le fichier `terraform.tfvars` pour le personnaliser, notamment l'emplacement de la paire de clés ( privée et publique ), le nom de la base de données à créer ainsi que l'utilisateur et mot de passe de base de données à créer, l'emplacement de la racine du serveur web ( dépend de l'image AMI utilisée ), et le reste qui est assez explicite.
+- ajustez le fichier `config` avec le chemin et le nom que vous avez choisi pour la votre ( remplacez `~/OCR/P10/MlleC/ssh/id_rsa_aws` par `chemin-au-choix/nom-de-la-clé-au-choix` ) dans chacune des 5 entrées, et ensuite placez ce fichier dans votre dossier ssh : `~/.ssh`
 
 Pour information, Terraform utilise 2 fichiers pour gérer les variables : `vars.tf` pour déclarer les variables et éventuellement leur donner une valeur par défaut, et `terraform.tfvars` pour spécifier la valeur des variables si elles n'ont pas valeur par défaut ou changer la valeur par défaut.
 
@@ -70,7 +72,7 @@ Il ne reste plus qu'à aller naviguer sur le site pour vérifier que tout foncti
 
 Pour accéder à Kibana, il faut copier la commande ssh disponible en output de Terraform, et l'exécuter dans un terminal de votre machine ( l'hôte ! pas la VM ! ).
 
-Cette commande ssh met en place un tunneling ssh entre votre machine et l'instance qui héberge Kibana chez AWS.
+Cette commande ssh met en place un tunneling ssh entre votre machine et l'instance qui héberge Kibana chez AWS, via un jump ssh par le bastion.
 
 A partir de là, vous pouvez accéder à Kibana dans votre navigateur web à l'adresse https://localhost:1443/_plugin/kibana
 
