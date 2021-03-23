@@ -1,0 +1,25 @@
+Host 15.*.*.*
+    IdentitiesOnly yes
+    IdentityFile ~/OCR/P10/MlleC/ssh/id_rsa_aws
+    StrictHostKeyChecking no
+
+Host 35.*.*.*
+    IdentitiesOnly yes
+    IdentityFile ~/OCR/P10/MlleC/ssh/id_rsa_aws
+    StrictHostKeyChecking no
+
+Host 52.*.*.*
+    IdentitiesOnly yes
+    IdentityFile ~/OCR/P10/MlleC/ssh/id_rsa_aws
+    StrictHostKeyChecking no
+
+Host 10.0.0.*
+    IdentitiesOnly yes
+    IdentityFile ~/OCR/P10/MlleC/ssh/id_rsa_aws
+    StrictHostKeyChecking no
+
+Host 10.0.1.*
+    IdentitiesOnly yes
+    IdentityFile ~/OCR/P10/MlleC/ssh/id_rsa_aws
+    StrictHostKeyChecking no
+
