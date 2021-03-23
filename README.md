@@ -78,13 +78,15 @@ Le navigateur web va vous signaler un problème de sécurité, qu'il faut ignore
 
 Pourquoi ? Simplement parce que je n'ai pas déployer de certificat de sécurité pour Kibana, étant donné que le cluster ElasticSearch qui l'héberge n'est pas disponible depuis le web, sauf au travers du bastion SSH, et le tunneling ssh est sécurité et crypté, écartant tout risque d'interception...
 
-Pour mettre en place la Supervision, il faut commencer par gérer les Index Pattern, dans le menu Stack Management -> Index patterns.
+Pour mettre en place la Supervision, il faut commencer par gérer les Index Pattern, dans le menu Management -> Stack Management -> Index patterns.
 
 Commencez par supprimer celui nommé `filebeat-*` et définir celui nommé `metricbeat-*` comme Index Pattern par défaut.
 
-Pour finir, vous allez importer le Dashboard fourni ( `mllec-kibana-dashboard.ndjson` ) dans le menu Stack Management -> Saved objects.
+Pour finir, vous allez importer le Dashboard fourni ( `mllec-kibana-dashboard.ndjson` ) dans le menu Management -> Stack Management -> Saved objects.
 
-Et voilà! Vous pouvez visualiser le Dashboard dans le menu Dashboard en sélectionnant celui nommé `MlleC - Global`.
+Et voilà! Vous pouvez visualiser le Dashboard dans le menu Kibana -> Dashboard en sélectionnant celui nommé `MlleC - Global`.
+
+En bonus, je vous invite à mettre en place un système d'alerte par Slack, par exemple lorsque le disque dur atteint 95% d'espace occupé ( index `metricbeat-*` et champ `system.filesystem.used.pct` ), ou autre, dans le menu Kibana -> Alerting.
 
 # Et après ?
 Au choix, soit vous créez votre site de zéro ( mais ça m'étonnerait avec une infrastructure pareille ), soit vous importez une sauvegarde de votre base de données de votre site Wordpress existant avec votre client mysql favori.
